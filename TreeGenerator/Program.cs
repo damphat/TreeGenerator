@@ -12,7 +12,7 @@ namespace TreeGenerator
             var depth = 2;
 
             var all = Generator.Gen(keys, values, depth).ToList();
-            foreach (var o in all) Console.WriteLine(o.ToJson(0));
+            foreach (var o in all) Console.WriteLine(o.ToJson(2));
             Console.ReadLine();
         }
     }
