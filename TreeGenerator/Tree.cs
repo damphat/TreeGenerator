@@ -2,7 +2,7 @@
 
 namespace TreeGenerator
 {
-    public partial class Tree : Dictionary<string, object>
+    public class Tree : Dictionary<string, object>
     {
         public override string ToString()
         {

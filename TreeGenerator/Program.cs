@@ -5,28 +5,15 @@ namespace TreeGenerator
 {
     internal class Program
     {
-        /// <summary>
-        /// Not Implemented
-        /// </summary>
-        static IEnumerable<object> GenerateAllPossibleTree(string[] keys, object[] values, int depth)
+        private static IEnumerable<object> GenerateAllPossibleTree(string[] keys, object[] values, int depth)
         {
-            yield return 1;
-            yield return 2;
-            yield return new Tree {{"x", 1}, {"y", 2}};
-
+            throw new NotImplementedException("We need more brains");
         }
 
         private static void Main(string[] args)
         {
-            var keys = new string[] {"x", "y"};
-            var values = new object[] {1, 2};
-            var depth = 2;
-
-            foreach (var tree in GenerateAllPossibleTree(keys, values, depth))
-            {
-                Console.WriteLine(tree.ToJson());
-            }
-
+            var listOfSubsetOfKeys = Generator.GenKeys("x", "y");
+            Console.Write(listOfSubsetOfKeys.ToJson());
             Console.ReadLine();
         }
     }
