@@ -11,7 +11,7 @@ namespace TreeGenerator {
             return sb.Append(' ', indentLevel * indent);
         }
 
-        private static StringBuilder Write(StringBuilder sb, IDictionary dict, int indent, int indentLevel) {
+        private static StringBuilder WriteObject(StringBuilder sb, IDictionary dict, int indent, int indentLevel) {
             if (dict.Count == 0) indent = 0;
             sb.Append("{");
             var first = true;
@@ -29,7 +29,7 @@ namespace TreeGenerator {
             return sb;
         }
 
-        private static StringBuilder Write(StringBuilder sb, IEnumerable list, int indent, int indentLevel) {
+        private static StringBuilder WriteArray(StringBuilder sb, IEnumerable list, int indent, int indentLevel) {
             if (list is ICollection col && col.Count == 0) indent = 0;
             sb.Append("[");
             var first = true;
@@ -39,7 +39,7 @@ namespace TreeGenerator {
                 else {
                     if (first) first = false; else  sb.Append(',');
                 }
-                sb.Append(e);
+                Write(sb, e, indent, indentLevel + 1);
             }
             if(indent > 0) WriteIndent(sb, indent, indentLevel);
             sb.Append("]");
@@ -52,8 +52,8 @@ namespace TreeGenerator {
                 case null: return sb.Append("null");
                 case bool b: return sb.Append(b ? "true" : "false");
                 case string s: return sb.Append(s);
-                case IDictionary dict: return Write(sb, dict, indent, indentLevel);
-                case IEnumerable list: return Write(sb, list, indent, indentLevel);
+                case IDictionary dict: return WriteObject(sb, dict, indent, indentLevel);
+                case IEnumerable list: return WriteArray(sb, list, indent, indentLevel);
                 default: return sb.Append(o);
             }
             
