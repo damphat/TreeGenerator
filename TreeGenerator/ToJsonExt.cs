@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Text;
 
 namespace TreeGenerator {
@@ -11,16 +12,66 @@ namespace TreeGenerator {
             return sb.Append(' ', indentLevel * indent);
         }
 
+        private static StringBuilder WriteString(StringBuilder sb, string s)
+        {
+            sb.Append('"');
+            foreach (var c in s)
+            {
+                if (c >= ' ')
+                {
+                    switch (c)
+                    {
+                        case '\"':
+                            sb.Append(@"\""");
+                            break;
+                        case '\\':
+                            sb.Append(@"\\");
+                            break;
+                        default:
+                            sb.Append(c);
+                            break;
+                    }
+                }
+                else
+                {
+                    switch (c)
+                    {
+                        case '\b': sb.Append(@"\b"); break;
+                        case '\f': sb.Append(@"\f"); break;
+                        case '\r': sb.Append(@"\r"); break;
+                        case '\n': sb.Append(@"\n"); break;
+                        case '\t': sb.Append(@"\t"); break;
+                        default: {
+                            static char Hex(int c) => c < 10 ? (char) ('0' + c) : (char) ('a' + (c - 10));
+                            sb.Append(@"\u00");
+                            sb.Append(Hex(c / 16));
+                            sb.Append(Hex(c % 16));
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            return sb.Append('"');
+        }
+
+        private static StringBuilder WriteKey(StringBuilder sb, string key)
+        {
+            return WriteString(sb, key);
+        }
+
         private static StringBuilder WriteObject(StringBuilder sb, IDictionary dict, int indent, int indentLevel) {
             if (dict.Count == 0) indent = 0;
             sb.Append("{");
             var first = true;
 
             foreach (DictionaryEntry e in dict) {
+                if (first) first = false; else sb.Append(',');
                 if (indent > 0) WriteIndent(sb, indent, indentLevel + 1);
-                else if (first) first = false; else sb.Append(',');
 
-                sb.Append(e.Key);
+                WriteKey(sb, e.Key.ToString());
+
                 sb.Append(": ");
                 Write(sb, e.Value, indent, indentLevel + 1);
             }
@@ -34,11 +85,11 @@ namespace TreeGenerator {
             sb.Append("[");
             var first = true;
             foreach (var e in list) {
+                if (first) first = false; else sb.Append(",");
+
                 if (indent > 0)
                     WriteIndent(sb, indent, indentLevel + 1);
-                else {
-                    if (first) first = false; else  sb.Append(',');
-                }
+
                 Write(sb, e, indent, indentLevel + 1);
             }
             if(indent > 0) WriteIndent(sb, indent, indentLevel);
@@ -51,7 +102,7 @@ namespace TreeGenerator {
             switch (o) {
                 case null: return sb.Append("null");
                 case bool b: return sb.Append(b ? "true" : "false");
-                case string s: return sb.Append(s);
+                case string s: return WriteString(sb, s);
                 case IDictionary dict: return WriteObject(sb, dict, indent, indentLevel);
                 case IEnumerable list: return WriteArray(sb, list, indent, indentLevel);
                 default: return sb.Append(o);
