@@ -16,7 +16,9 @@ namespace TreeGenerator
             if (this.Count != tree.Count) return false;
             foreach (var (k, v) in this)
             {
-                if (!Equals(tree[k], v)) return false;
+                if (!tree.TryGetValue(k, out var tk)) return false;
+
+                if (!Equals(tk, v)) return false;
             }
 
             return true;
