@@ -6,6 +6,7 @@ namespace TreeGenerator
     internal class Program
     {
         // commit with GPG
+        // count: 1
         private static void Main(string[] args)
         {
             var keys = new[] {"x", "y"};
