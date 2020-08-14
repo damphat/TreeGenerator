@@ -1,5 +1,7 @@
 ﻿# TreeGenerator
 
+[![Coverage Status](https://coveralls.io/repos/github/damphat/TreeGenerator/badge.svg)](https://coveralls.io/github/damphat/TreeGenerator)
+
 ## Algorithm wanted:
 
 * I need an algorithm to generate all possible json-tree.
