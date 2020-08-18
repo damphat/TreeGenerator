@@ -1,5 +1,5 @@
 ﻿# TreeGenerator
-
+![CI](https://github.com/damphat/TreeGenerator/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/damphat/TreeGenerator/badge.svg)](https://coveralls.io/github/damphat/TreeGenerator)
 
 ## Algorithm wanted:
